@@ -31,11 +31,11 @@ func (a *Account) Close() (payout int64, ok bool) {
 	return currentBalance, true
 }
 
-// Balance returns the current balance
+// Extending the account structure with this balance method and returns a balance and boolean determining status of operation
 func (a *Account) Balance() (balance int64, ok bool) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
-	if !a.open {
+	a.mutex.Lock()         // Aquire the lock on the shared resource ... the balance
+	defer a.mutex.Unlock() // Release lock once surrounding function has been executed
+	if !a.open {           // If the bank account isnt open return false
 		return 0, false
 	}
 	return a.balance, true
