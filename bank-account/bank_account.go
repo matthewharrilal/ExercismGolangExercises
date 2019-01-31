@@ -20,12 +20,13 @@ func Open(initialDeposit int64) *Account {
 // Closes the account and returns a payout and a boolean determining if it was a succesful operation
 func (a *Account) Close() (payout int64, ok bool) {
 	a.mutex.Lock() // Aquire a lock on the bank account so only one thread has access to this shared resource
-	defer a.mutex.Unlock()
-	if !a.open {
+
+	defer a.mutex.Unlock() // Release the lock only until the surrounding function has executed
+	if !a.open {           // If the bank account isn't open then there is no payout and return false meaning that you cant close what is already closed
 		return 0, false
 	}
 	currentBalance := a.balance
-	a.open = false
+	a.open = false // Payout with the current balance set open status to false and return the current balance
 	a.balance = 0
 	return currentBalance, true
 }
