@@ -37,17 +37,19 @@ import (
 // LET US ANALYZE WHAT IS HAPPENING IN THESE TEST CASES
 
 func TestSeqOpenBalanceClose(t *testing.T) {
-	// open account
+	// open account with test amount and check if
 	const amt = 10
-	a := Open(amt)
+	a := Open(amt) // If the account that comes back from this operation returns nil we have run into an error
 	if a == nil {
 		t.Fatalf("Open(%d) = nil, want non-nil *Account.", amt)
 	}
+
+	// Print this statement if the account that came back isnt nill
 	t.Logf("Account 'a' opened with initial balance of %d.", amt)
 
-	// verify balance after open
+	// Switch statement on the status of the balance being returnrf of the account
 	switch b, ok := a.Balance(); {
-	case !ok:
+	case !ok: // Returns false because the account is no longer open
 		t.Fatal("a.Balance() returned !ok, want ok.")
 	case b != amt:
 		t.Fatalf("a.Balance() = %d, want %d", b, amt)
