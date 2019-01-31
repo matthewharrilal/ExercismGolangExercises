@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func reverse(word string) string {
+func reverse_string(word string) string {
 	// Firt convert the word to an array slice
 	arrWord := strings.Split(word, "")
 
