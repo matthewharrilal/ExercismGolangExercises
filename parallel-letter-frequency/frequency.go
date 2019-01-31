@@ -1,7 +1,5 @@
 package letter
 
-import "fmt"
-
 // FreqMap records the frequency of each rune in a given text.
 type FreqMap map[rune]int
 
@@ -16,28 +14,28 @@ func Frequency(s string) FreqMap {
 }
 
 func ConcurrentFrequency(texts []string) FreqMap {
-	// Concurrently calculates the frequency of occurences of letters in a string
-	channel := make(chan FreqMap) // Going to be writing the frequency of occurences of the letters through the channels
-	result := FreqMap{}
-	for _, word := range texts {
-		// Once we are able to calculate the value of the letter we are currently on we want to be
 
+	// Instantiate channel that we are going to be passing maps through
+	channel := make(chan FreqMap) // Going to be writing the frequency of occurences of the letters through the channels
+
+	// Store result of overall text in result map
+	result := FreqMap{}
+
+	// Iterate over words in the given text
+	for _, word := range texts {
+
+		// Spin a separate go routine for every word to calculate the frequency for the word
 		go func(word string) {
-			//fmt.Println(Frequency(word))
 			channel <- Frequency(word) // Write histogram to channel for each word
 		}(word) // Execute anonymous func
 	}
 
-	// SO what do we know, that texts is an array of words
-
-	for range texts { // Iterate over the words in the texts
-		//fmt.Println(texts)
-		for val := range <-channel {
-			fmt.Println(val)
-			//result[letter] ++
+	// Iterate over the words given to recieve all words written through the channel or else sender will block .... no one to recieve
+	for range texts { // Recieve from channel from number of times you send through the channel
+		for letter, frequency := range <-channel {
+			// For the word written through the channel recieve and calculate frequency in result map ... will only get the first word if not iterating over the range of the texts
+			result[letter] += frequency
 		}
 	}
-
-	fmt.Println(result)
 	return result
 }
