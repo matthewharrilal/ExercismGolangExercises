@@ -41,12 +41,12 @@ func (a *Account) Balance() (balance int64, ok bool) {
 	return a.balance, true
 }
 
-// Deposit deposit or withdraws a given amount from the account (if the resulting balance is not negative)
+// Extending the account structure with the deposit mehtod takes in an initial amoutnand returns the new balance and whether or not operation was successful
 func (a *Account) Deposit(amount int64) (newBalance int64, ok bool) {
-	a.mutex.Lock()
-	defer a.mutex.Unlock()
+	a.mutex.Lock()         // Aquire the lock on the shared resource the balance
+	defer a.mutex.Unlock() // Release lock when surrouding function has executed
 	if !a.open || a.balance+amount < 0 {
-		return 0, false
+		return 0, false // If the bank account is not open or even with the deposit the balance is still negativr
 	}
 	a.balance += amount
 	return a.balance, true
