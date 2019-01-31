@@ -34,6 +34,8 @@ import (
 	"time"
 )
 
+// LET US ANALYZE WHAT IS HAPPENING IN THESE TEST CASES
+
 func TestSeqOpenBalanceClose(t *testing.T) {
 	// open account
 	const amt = 10
