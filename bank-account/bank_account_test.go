@@ -56,7 +56,7 @@ func TestSeqOpenBalanceClose(t *testing.T) {
 	}
 
 	// close account
-	switch p, ok := a.Close(); {
+	switch p, ok := a.Close(); { // Switch statement upon the balance returned and the boolean returned from the operation 
 	case !ok:
 		t.Fatalf("a.Close() returned !ok, want ok.")
 	case p != amt:
